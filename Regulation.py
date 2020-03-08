@@ -167,4 +167,79 @@ charref = re.compile(r'''
 ''', re.VERBOSE)
 
 
+
+
 ### 3. 응용하기
+# | : or  'A|b'
+
+p = re.compile('Crow|Servo')
+m = p.match('CrowHello')
+print(m)
+print("=====")
+
+# ^ : 맨 앞 문자가 일치
+print(re.search('^Life', 'Life is too short'))
+print(re.search('^Life', 'My Life'))
+print("=====")
+
+# \A : 전체 문자열의 처음과 매치
+
+# $ : 문자 끝과 일치
+print(re.search('short$', 'Life is too short'))
+print(re.search('short$', 'Life is too short, you neet python'))
+print("=====")
+
+# \Z : 전체 문자열의 끈과 매치
+
+# \b :  단어 구분자(word boundary), 보통 단어는 whitespace에 의해 구분
+p = re.compile(r'\bclass\b')
+print(p.search('no class at all'))
+print(p.search('the dackassified algorithm'))
+print("=====")
+
+# \B : whitespace로 구분된 단어가 아닌 경우에 매칭
+
+p = re.compile(r'\Bclass\B')
+print(p.search('no class at all'))
+print(p.search('the daclassified algorithm'))
+
+print("=============\n\n\n")
+
+# Grouping (ABC)+
+p = re.compile('(ABC)+')
+m = p.search('ABCABCABC OK?')
+print(m)
+print(m.group(0))
+print("=====")
+
+p = re.compile(r"(\w+)\s+((\d+)[-]\d+[-]\d+)")
+m = p.search("park 010-1234-1234")
+print(m.group(0))
+print(m.group(1))
+print(m.group(2))
+print(m.group(3))
+print("=====")
+
+p = re.compile(r"(\b\w+)\s+\1")
+m = p.search('Paris in the the spring').group()
+print(m)
+print("=============\n\n\n")
+
+# Grouping에 이름 붙이기
+p = re.compile(r"(?P<name>\w+)\s+((\d+)[-]\d+[-]\d+)")
+m = p.search("park 010-1234-1234")
+print(m.group(0))
+print(m.group(1))
+print(m.group('name'))
+print("=============\n\n\n")
+
+
+# 문자열 바꾸기 sub()
+p = re.compile('(blue|white|red)')
+m = p.sub('colour', 'blue socks and red shoes', count=1)
+print("blue를 찾아서 colour로 변경 >>", m)
+print("=====")
+
+p = re.compile(r"(?P<name>\w+)\s+(?P<phone>(\d+)[-]\d+[-]\d+)")
+m = p.sub("\g<phone> 하하 \g<name>", "park 010-1234-1234")
+print("이름과 전화번호 위치를 변경 >>", m)
